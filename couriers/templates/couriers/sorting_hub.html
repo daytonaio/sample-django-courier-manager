@@ -1,0 +1,156 @@
+{% extends 'couriers/base.html' %}
+
+{% block title %}Initial Sorting Hub{% endblock %}
+{% block css %}
+<style>
+    #chat-reply {
+        margin-top: 20px;
+    }
+    .container{
+        min-height: 120vh;
+      }
+</style>
+<style>
+    h1 {
+        color: #007bff; /* Blue color */
+        animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    select {
+        font-size: 1.25em;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        transition: all 0.3s ease;
+    }
+
+    select option {
+        background-color: #87ceeb; /* Sky blue */
+        color: #fff;
+    }
+
+    select option:hover {
+        background-color: #00bfff;
+    }
+
+    button {
+        background-color: #28a745; /* Green background */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #218838;
+        transform: scale(1.1);
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.2em;
+        animation: fadeUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    ul li:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    ul li:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    ul li:nth-child(3) {
+        animation-delay: 0.8s;
+    }
+
+    @keyframes fadeUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .form-container {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock css %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Initial Sorting Hub</h1>
+    <p>Manage your items and parcels at the sorting hub. You can sort items by category or destination.</p>
+
+    <form method="POST" action="{% url 'sort_items' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="item_category" class="form-label">Select Item Category</label>
+            <select class="form-select" id="item_category" name="item_category">
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="books">Books</option>
+                <option value="fragile">Fragile Items</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="destination" class="form-label">Destination</label>
+            <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter destination address">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sort Items</button>
+    </form>
+
+    <h3 class="mt-5">Sorted Items</h3>
+    <ul>
+        <li>Electronics - New York</li>
+        <li>Clothing - California</li>
+        <li>Books - Texas</li>
+    </ul>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places"></script>
+<script>
+    function initAutocomplete() {
+        const input = document.getElementById('destination');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.setComponentRestrictions({
+            country: ["us"],
+        });
+
+        autocomplete.addListener('place_changed', function () {
+            const place = autocomplete.getPlace();
+            console.log('Selected Place:', place);
+            if (!place.geometry || !place.geometry.location) {
+                alert('No details available for the selected location.');
+                return;
+            }
+        });
+    }
+    window.onload = initAutocomplete;
+</script>
+{% endblock %}

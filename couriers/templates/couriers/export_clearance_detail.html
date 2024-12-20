@@ -1,0 +1,18 @@
+{% extends 'couriers/base.html' %}
+{% block css %}
+<style>
+    #chat-reply {
+        margin-top: 20px;
+    }
+    .container{
+        min-height: 120vh;
+      }
+</style>
+{% endblock css %}
+{% block content %}
+  <h2>Export Customs Clearance Details</h2>
+  <p>Status: {{ clearance.clearance_status }}</p>
+  <p>Documentation: {{ clearance.export_documentation }}</p>
+  <p>Officer: {{ clearance.customs_officer_name }}</p>
+  <p>Clearance Date: {{ clearance.clearance_date }}</p>
+{% endblock %}
