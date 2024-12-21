@@ -65,7 +65,7 @@
 1. **Create the Daytona Environment**:
 Initialize the project directly with Daytona:
   ```sh
-    daytona create https://github.com/rupacesigdel/COURIER_WEB.git
+    daytona create  https://github.com/daytonaio/sample-django-courier-manager
   ```
 2. **Create the .env file:**
 - Get the API key and set it in the GOOGLE_MAPS_API_KEY environment variable.
